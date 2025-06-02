@@ -86,7 +86,7 @@ export default function TicketDetailsPage({ params }) {
         title: ticket.title,
       })
 
-      const response = await fetch("http://127.0.0.1:5007/generate_code", {
+      const response = await fetch("https://jira-automation-backend.onrender.com/generate_code", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
