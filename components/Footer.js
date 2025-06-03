@@ -38,7 +38,7 @@ export default function Footer() {
                     <Sparkles className="h-8 w-8" />
                   </div>
                 </div>
-                <span className="text-2xl font-bold text-white">Ankush's Builder</span>
+                <span className="text-2xl font-bold text-white">Ankush&apos;s Builder</span>
               </div>
               <p className="text-gray-400 mb-6 max-w-md leading-relaxed">
                 Revolutionizing development workflows with AI-powered automation. Transform your Jira tickets into
