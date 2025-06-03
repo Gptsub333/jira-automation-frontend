@@ -38,6 +38,7 @@ export default function DeployPage() {
   const [generatedCode, setGeneratedCode] = useState("")
   const [isEditing, setIsEditing] = useState(false)
   const [codeError, setCodeError] = useState(null)
+  const [fileExtension, setFileExtension] = useState("js")
 
   // Fetch repositories from API
   const fetchRepositories = async () => {
@@ -86,7 +87,7 @@ export default function DeployPage() {
       // More specific error messages
       if (err.name === "TypeError" && err.message.includes("fetch")) {
         setError(
-          "Failed to connect to GitHub API service. Make sure the Flask backend is running on http://localhost:5003",
+          "Failed to connect to GitHub API service. Make sure the Flask backend is running on https://jira-automation-backend.onrender.com",
         )
       } else if (err.message.includes("CORS")) {
         setError("CORS error: Make sure the Flask backend has CORS enabled")
@@ -106,9 +107,14 @@ export default function DeployPage() {
         const data = JSON.parse(storedData)
         setGeneratedCode(data.code || "")
 
+        // Get file extension if available
+        if (data.fileExtension) {
+          setFileExtension(data.fileExtension)
+        }
+
         // Set default file path and commit message based on ticket info
         if (data.ticketId) {
-          setFilePath(`src/${data.ticketId.toLowerCase()}.js`)
+          setFilePath(`src/${data.ticketId.toLowerCase()}.${data.fileExtension || "js"}`)
           setCommitMessage(`feat: implement ${data.ticketId} - ${data.ticketTitle || "code generation"}`)
         }
       } else {
@@ -178,6 +184,19 @@ export default function DeployPage() {
     loadGeneratedCode()
   }, [])
 
+  // Update file path when file extension changes
+  useEffect(() => {
+    if (ticketId && filePath) {
+      // Extract the base path without extension
+      const pathParts = filePath.split(".")
+      if (pathParts.length > 1) {
+        // Remove the last part (extension) and add the new one
+        pathParts.pop()
+        setFilePath(`${pathParts.join(".")}.${fileExtension}`)
+      }
+    }
+  }, [fileExtension])
+
   const handleDeploy = async () => {
     if (!selectedRepo) {
       alert("Please select a repository")
@@ -207,7 +226,7 @@ export default function DeployPage() {
       formData.append("commit_message", commitMessage)
 
       // Create a Blob from the code and add it as a file
-      const codeBlob = new Blob([generatedCode], { type: "text/javascript" })
+      const codeBlob = new Blob([generatedCode], { type: "text/plain" })
       formData.append("file", codeBlob, filePath.split("/").pop())
 
       // Send the request to the API
@@ -375,16 +394,6 @@ export default function DeployPage() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {/* <a
-                href={`https://github.com/${selectedRepo}/blob/${branch}/${filePath}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center space-x-2 bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-              >
-                <Code className="h-5 w-5" />
-                <span>View File on GitHub</span>
-                <ExternalLink className="h-4 w-4" />
-              </a> */}
               {deploymentResult && deploymentResult.commit && deploymentResult.commit.html_url && (
                 <a
                   href={deploymentResult.commit.html_url}

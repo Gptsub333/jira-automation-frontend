@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { ArrowLeft, ArrowRight, Copy, Download, Edit3, Sparkles, AlertCircle } from "lucide-react"
+import { ArrowLeft, ArrowRight, Copy, Download, Edit3, Sparkles, AlertCircle, Check } from "lucide-react"
 import { useSearchParams } from "next/navigation"
 
 export default function GeneratePage() {
@@ -15,6 +15,11 @@ export default function GeneratePage() {
   const [error, setError] = useState(null)
   const [ticketTitle, setTicketTitle] = useState("")
 
+    // File extension editing
+  const [fileExtension, setFileExtension] = useState("js")
+  const [isEditingExtension, setIsEditingExtension] = useState(false)
+  const [tempExtension, setTempExtension] = useState("js")
+
   useEffect(() => {
     // Simulate loading time then get code from localStorage
     const timer = setTimeout(() => {
@@ -25,6 +30,10 @@ export default function GeneratePage() {
           if (data.ticketId === ticketId) {
             setCode(data.code || "No code was generated.")
             setTicketTitle(data.ticketTitle || "")
+            if (data.fileExtension) {
+              setFileExtension(data.fileExtension)
+              setTempExtension(data.fileExtension)
+            }
           } else {
             setError("No generated code found for this ticket.")
           }
@@ -51,8 +60,8 @@ export default function GeneratePage() {
   }
 
   const handleDownload = () => {
-    const filename = `${ticketId || "generated"}-code.js`
-    const blob = new Blob([code], { type: "text/javascript" })
+    const filename = `${ticketId || "generated"}-code.${fileExtension}`
+    const blob = new Blob([code], { type: "text/plain" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
@@ -76,6 +85,43 @@ export default function GeneratePage() {
       }
     } catch (err) {
       console.error("Failed to update code in storage:", err)
+    }
+  }
+  const startEditingExtension = () => {
+    setTempExtension(fileExtension)
+    setIsEditingExtension(true)
+  }
+  const saveExtension = () => {
+    // Validate extension (remove spaces, dots, etc.)
+    const cleanExtension = tempExtension.trim().replace(/^\.+/, "").replace(/\s+/g, "")
+
+    if (cleanExtension) {
+      setFileExtension(cleanExtension)
+
+      // Save to localStorage
+      try {
+        const storedData = localStorage.getItem("generatedCode")
+        if (storedData) {
+          const data = JSON.parse(storedData)
+          data.fileExtension = cleanExtension
+          localStorage.setItem("generatedCode", JSON.stringify(data))
+        }
+      } catch (err) {
+        console.error("Failed to update file extension in storage:", err)
+      }
+    } else {
+      setTempExtension("js") // Default to js if empty
+    }
+
+    setIsEditingExtension(false)
+  }
+
+  const handleExtensionKeyDown = (e) => {
+    if (e.key === "Enter") {
+      saveExtension()
+    } else if (e.key === "Escape") {
+      setIsEditingExtension(false)
+      setTempExtension(fileExtension)
     }
   }
 
@@ -146,13 +192,38 @@ export default function GeneratePage() {
             </div>
 
             {/* Code Preview */}
-            <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl overflow-hidden">
+              {/* Code Preview */}
+              <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl overflow-hidden">
               <div className="flex items-center justify-between p-4 border-b border-gray-700">
                 <div className="flex items-center space-x-3">
                   <h3 className="text-lg font-semibold text-white">Generated Code</h3>
-                  <span className="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded border border-blue-500/20">
-                    {ticketId || "generated"}-code.js
-                  </span>
+                  <div className="flex items-center">
+                    <span className="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-l border-l border-y border-blue-500/20">
+                      {ticketId || "generated"}-code
+                    </span>
+                    {isEditingExtension ? (
+                      <div className="flex items-center">
+                        <span className="text-blue-400 text-xs">.</span>
+                        <input
+                          type="text"
+                          value={tempExtension}
+                          onChange={(e) => setTempExtension(e.target.value)}
+                          onBlur={saveExtension}
+                          onKeyDown={handleExtensionKeyDown}
+                          className="w-12 px-1 py-1 bg-blue-500/10 text-blue-400 text-xs border-r border-y border-blue-500/20 rounded-r focus:outline-none focus:ring-1 focus:ring-blue-500"
+                          autoFocus
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex items-center cursor-pointer group" onClick={startEditingExtension}>
+                        <span className="text-blue-400 text-xs">.</span>
+                        <span className="px-1 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-r border-r border-y border-blue-500/20 group-hover:bg-blue-500/20">
+                          {fileExtension}
+                        </span>
+                        <Edit3 className="h-3 w-3 text-gray-400 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="flex items-center space-x-2">
                   <button
@@ -166,7 +237,7 @@ export default function GeneratePage() {
                     onClick={handleCopy}
                     className="flex items-center space-x-1 px-3 py-1 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded transition-colors"
                   >
-                    <Copy className="h-4 w-4" />
+                    {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                     <span>{copied ? "Copied!" : "Copy"}</span>
                   </button>
                   <button
