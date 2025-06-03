@@ -64,71 +64,13 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Quick Links */}
-            <div>
-              <h3 className="text-white font-semibold mb-4 relative">
-                Quick Links
-                <div className="absolute bottom-0 left-0 w-8 h-0.5 bg-gradient-to-r from-blue-400 to-purple-500"></div>
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  { name: "Home", href: "/" },
-                  { name: "Tickets", href: "/tickets" },
-                  { name: "Features", href: "/#features" },
-                  { name: "Documentation", href: "#" },
-                ].map((link, index) => (
-                  <li key={index}>
-                    <Link
-                      href={link.href}
-                      className="text-gray-400 hover:text-white transition-colors duration-300 hover:translate-x-1 inline-block"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Support */}
-            <div>
-              <h3 className="text-white font-semibold mb-4 relative">
-                Support
-                <div className="absolute bottom-0 left-0 w-8 h-0.5 bg-gradient-to-r from-blue-400 to-purple-500"></div>
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  { name: "Help Center", href: "#" },
-                  { name: "Contact Us", href: "#" },
-                  { name: "Privacy Policy", href: "#" },
-                  { name: "Terms of Service", href: "#" },
-                ].map((link, index) => (
-                  <li key={index}>
-                    <a
-                      href={link.href}
-                      className="text-gray-400 hover:text-white transition-colors duration-300 hover:translate-x-1 inline-block"
-                    >
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
 
           {/* Bottom Section */}
           <div className="mt-12 pt-8 border-t border-gray-800/50">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
               <div className="text-gray-400 text-sm">
-                © 2025 Jira Soda. All rights reserved. Built with ❤️ for developers.
-              </div>
-              <div className="flex items-center space-x-6 text-sm">
-                <span className="text-gray-400">Made by</span>
-                <div className="flex items-center space-x-2">
-                  <span className="text-gray-300">Team</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-gray-300">Status Code - 404</span>
-                </div>
+                © 2025 Ankush built-in product. All rights reserved. Built with ❤️ for developers.
               </div>
             </div>
           </div>

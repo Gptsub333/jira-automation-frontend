@@ -26,17 +26,6 @@ export default function HomePage() {
               <Sparkles className="h-8 w-8 text-blue-400" />
               <span className="text-2xl font-bold text-white">Ankush&apos;s Builder</span>
             </div>
-            <div className="hidden md:flex space-x-8">
-              <Link href="#features" className="text-gray-300 hover:text-white transition-colors">
-                Features
-              </Link>
-              <Link href="#about" className="text-gray-300 hover:text-white transition-colors">
-                About
-              </Link>
-              <Link href="#contact" className="text-gray-300 hover:text-white transition-colors">
-                Contact
-              </Link>
-            </div>
           </div>
         </div>
       </nav>
@@ -68,9 +57,6 @@ export default function HomePage() {
                 <span>Start Automating</span>
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <button className="text-gray-300 hover:text-white px-8 py-4 rounded-lg border border-gray-600 hover:border-gray-500 transition-all duration-300">
-                Watch Demo
-              </button>
             </div>
           </div>
         </div>
@@ -123,51 +109,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Workflow Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900/50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">How It Works</h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Four simple steps to transform your Jira tickets into deployed code
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { step: "01", title: "Connect Jira", desc: "Link your Jira workspace and select tickets" },
-              { step: "02", title: "Extract Requirements", desc: "AI analyzes ticket details and acceptance criteria" },
-              { step: "03", title: "Generate Code", desc: "LLM creates production-ready code automatically" },
-              { step: "04", title: "Deploy to GitHub", desc: "Code is pushed to your repository instantly" },
-            ].map((item, index) => (
-              <div key={index} className="text-center">
-                <div className="bg-gradient-to-r from-blue-500 to-purple-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
-                  {item.step}
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
-                <p className="text-gray-300">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready to Revolutionize Your Workflow?</h2>
-          <p className="text-xl text-gray-300 mb-8">
-            Join thousands of developers who have automated their development process with Jira Soda
-          </p>
-          <Link
-            href="/tickets"
-            className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl"
-          >
-            <span>Get Started Now</span>
-            <ArrowRight className="h-5 w-5" />
-          </Link>
-        </div>
-      </section>
+      
     </div>
   )
 }
