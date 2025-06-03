@@ -24,7 +24,7 @@ export default function HomePage() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
               <Sparkles className="h-8 w-8 text-blue-400" />
-              <span className="text-2xl font-bold text-white">Holbox Automation Tool</span>
+              <span className="text-2xl font-bold text-white">Ankush&apos;s Builder</span>
             </div>
             <div className="hidden md:flex space-x-8">
               <Link href="#features" className="text-gray-300 hover:text-white transition-colors">
